@@ -1,4 +1,4 @@
-# 🚀 BÁO CÁO ĐỒ ÁN: TỐI ƯU HÓA THUẬT TOÁN SẮP XẾP (BENCHMARK SORT)
+# 🎯 BÁO CÁO ĐỒ ÁN: TỐI ƯU HÓA THUẬT TOÁN SẮP XẾP (BENCHMARK SORT)
 
 > **Mục tiêu cốt lõi:** Không chỉ dừng ở tính đúng đắn của logic, đồ án này là một nghiên cứu thực chiến về tối ưu hóa phần cứng (Hardware-aware), ép xung hiệu năng CPU (Cache Locality, Zero Copy, Pointer Array) để bứt phá giới hạn `O(N log N)` trước các luồng dữ liệu cực đoan.
 
@@ -8,6 +8,7 @@
 * **Sinh viên đại diện:** Lê Quang Quốc Tuấn
 * **Mã số sinh viên:** 25120461
 * **Lớp:** 25CTT6
+  
 **Thành viên nhóm:**
 1. **Lê Quang Quốc Tuấn** - MSSV: 25120461
 2. **Nguyễn Đình Nhân** - MSSV: 25120402
