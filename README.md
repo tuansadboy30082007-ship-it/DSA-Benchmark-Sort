@@ -42,7 +42,7 @@ Bộ sinh test case không kiểm tra tính đúng đắn, mà đóng vai trò n
 * **Test mảng ngược / Răng cưa:** Gây nhiễu vị trí Pivot cố định, làm tăng số lần đệ quy, ép QuickSort thoái hóa về O(N^2) và dính Time Limit Exceeded (TLE).
 
 ### 2. Bài B (Lexicographical String Sort)
-* **Khóa chết vòng lặp (TLE):** 1 chuỗi dài 900.000 ký tự và 99.999 chuỗi dài 1 ký tự. Đánh sập LSD Radix Sort vì thuật toán bị ép chạy 900.000 vòng lặp vô nghĩa cho toàn bộ phần tử, tạo ra hàng tỷ phép tính thừa.
+* **Khóa chết vòng lặp (TLE):** 1 chuỗi dài 99 ký tự và 99.999 chuỗi dài 1 ký tự. Đánh sập LSD Radix Sort vì thuật toán bị ép chạy 900.000 vòng lặp vô nghĩa cho toàn bộ phần tử, tạo ra hàng tỷ phép tính thừa.
 * **Mảng tiền tố chung (Long Prefix):** Mảng chuỗi giống hệt nhau ở 99 ký tự đầu. Kéo sập tốc độ của các thuật toán đọ chuỗi thông thường.
 
 ### 3. Bài C (Length-Lexicographical Sort)
