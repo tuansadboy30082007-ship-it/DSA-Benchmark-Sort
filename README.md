@@ -39,33 +39,44 @@ Hệ thống sử dụng bộ sinh dữ liệu mã nguồn `test_gen.cpp` để 
 
 ---
 
-### 1. Bài A (Integer Sort) — Quy mô: $N = 100,000$ phần tử
+### Cách thức sinh test case:
 
-* **`test001.in` (Mảng đã sắp xếp tăng dần):** Sinh dãy số liên tục từ $0$ đến $99,999$. Kịch bản này nhắm thẳng vào các thuật toán QuickSort ngây thơ chọn phần tử đầu hoặc cuối làm chốt (Pivot), ép độ phức tạp từ $O(N \log N)$ chạm đáy suy biến $O(N^2)$ gây TLE.
-* **`test002.in` (Mảng đã sắp xếp giảm dần):** Sinh ngược dãy số từ $100,000$ lùi về $1$. Mục tiêu tương tự test 1, thử thách khả năng phân hoạch đối xứng của các bộ lọc dữ liệu cơ sở.
-* **`test003.in` (Giá trị trùng lặp hoàn toàn):** Toàn bộ $100,000$ phần tử đều mang giá trị cố định `1005`. Nếu hàm phân hoạch QuickSort không xử lý chặt chẽ điều kiện biên dính dấu bằng (`<=` hoặc `>=`), con trỏ sẽ nhảy vô hạn hoặc phân rã mảng lệch hoàn toàn, gây tràn tầng đệ quy (Stack Overflow).
-* **`test004.in` (Cực đại và Cực tiểu đan xen):** Lặp liên tục chuỗi xen kẽ giữa số nguyên lớn nhất `2147483647` ($INT\_MAX$) và nhỏ nhất `-2147483648` ($INT\_MIN$). Test case này trực tiếp đánh sập thuật toán Counting Sort thông thường (gây tràn RAM do mảng đếm quá lớn), đồng thời kiểm tra tính đúng đắn khi xử lý bit dấu của Radix Sort.
-* **`test005.in` (Ngẫu nhiên diện rộng):** Sử dụng bộ sinh số ngẫu nhiên `mt19937` (Seed: `2111`) rải đều trên toàn bộ dải giá trị từ `-2147483648LL` đến `2147483647LL` để đánh giá hiệu năng tổng thể.
+### A:
 
----
+* **test001.in** (Đã sắp xếp tăng dần): Mảng đã được sắp xếp sẵn. Nếu ai dùng Quick Sort mà luôn chọn phần tử đầu tiên làm chốt (pivot), thuật toán sẽ bị biến thành O(N^2) và chạy quá thời gian (TLE).
 
-### 2. Bài B (Lexicographical String Sort) — Quy mô: $N = 100,000$ chuỗi
+* **test002.in** (Sắp xếp giảm dần): Tương tự Test 1, mảng ngược hoàn toàn sẽ làm khó các thuật toán thiếu tối ưu.
 
-* **`test001.in` (Chuỗi giống hệt nhau tuyệt đối):** Sinh ra $100,000$ chuỗi toàn ký tự `'a'` với độ dài kịch trần là 100 ký tự. Kịch bản này ép mọi hàm so sánh chuỗi nền tảng bắt buộc phải quét sâu từ ký tự thứ 1 đến ký tự thứ 100 mới đưa ra được kết luận, đẩy chi phí đọ chuỗi lên mức tối đa.
-* **`test002.in` (Trùng lặp tiền tố sâu - Long Prefix):** Tất cả chuỗi đều dùng chung 99 ký tự đầu là `'a'`, ký tự thứ 100 cuối cùng mới xoay vòng từ `'a'` đến `'z'`. Test case này đánh lừa các cơ chế ngắt nhánh sớm, ép CPU phải tốn chi phí duyệt sâu đến tận byte cuối cùng.
-* **`test003.in` (Nghịch đảo từ điển kịch trần):** Sinh các chuỗi dài 100 ký tự có thành phần giảm dần, sau đó tiến hành đảo ngược toàn mảng (`sort(v.rbegin(), v.rend())`). Đây là cấu trúc tồi tệ nhất phá vỡ các luồng chia tách dữ liệu của QuickSort gốc chuỗi.
-* **`test004.in` (Trùng tiền tố, lệch độ dài):** Sinh các chuỗi toàn ký tự `'a'` nhưng tăng dần độ dài từ 10 đến 100 ký tự, sau đó đảo ngược trật tự mảng. Test này bẫy các hàm đo chiều dài và kiểm tra tính bền vững của các thuật toán Radix dựa trên độ dài chuỗi biến thiên.
-* **`test005.in` (Ngẫu nhiên hỗn hợp):** Dùng `mt19937` (Seed: `2111`) sinh ngẫu nhiên cả độ dài chuỗi (từ 10 đến 100) lẫn phân bổ ký tự ngẫu nhiên trong dải từ `'a'` đến `'z'`.
+* **test003.in** (Toàn số giống nhau): 10^5 phần tử có giá trị y hệt nhau. Nếu code Quick Sort phân chia mảng không khéo (không xử lý tốt dấu bằng), chương trình sẽ bị lặp vô hạn hoặc tràn bộ nhớ .
 
----
+* **test004.in** (Cực đại và Cực tiểu xen kẽ): Xen kẽ số lớn nhất (2147483647) và số nhỏ nhất (-2147483648) của kiểu int. Test này tránh những người dùng mảng đếm (Counting Sort) bị tràn RAM hoặc xử lý bit dấu bị sai.
 
-### 3. Bài C (Length-Lexicographical Sort) — Quy mô: $N = 10,000$ chuỗi
+* **test005.in** (Ngẫu nhiên): Kiểm tra tổng thể với thuật toán.
 
-* **`test001.in` (Đồng nhất độ dài, ngược từ điển):** Khởi tạo $10,000$ chuỗi có cùng độ dài 100 ký tự (99 ký tự đầu là `'a'`, ký tự cuối giảm dần từ `'z'` về `'a'`) rồi xếp ngược. Test này triệt tiêu hoàn toàn lợi thế của bộ lọc độ dài, ép hệ thống phải quay về bài toán so sánh ký tự thô đắt đỏ.
-* **`test002.in` (Xen kẽ cực ngắn và cực dài):** Đan xen liên tục: một chuỗi dài 10 ký tự `'a'` rồi đến một chuỗi dài 100 ký tự `'z'`. Test case này ép các thuật toán hoán đổi vùng nhớ thô phải liên tục dịch chuyển các khối dữ liệu có kích thước chênh lệch lớn, làm lộ rõ chi phí ẩn của việc cấp phát RAM liên tục.
-* **`test003.in` (Độ dài suy biến giảm dần):** Sinh chuỗi có độ dài tụt dốc từ 100 xuống 10 ký tự (ngược hoàn toàn với yêu cầu đề bài là xếp tăng dần độ dài). Đây là kịch bản phá hoại cấu trúc phân hoạch, bẫy các thuật toán gom nhóm không tối ưu.
-* **`test004.in` (Trùng lặp chuỗi dài tối đa):** Sinh $10,000$ chuỗi giống hệt nhau, đều dài đúng 100 ký tự toàn chữ `'z'`. Mục tiêu là thử thách điều kiện dừng của hàm phân hoạch nội bộ trong các Bucket khi gặp dữ liệu bằng nhau tuyệt đối.
-* **`test005.in` (Ngẫu nhiên toàn vẹn):** Dùng `mt19937` (Seed: `2111`) sinh ngẫu nhiên chiều dài từ 10 đến 100 ký tự và phân bổ chữ cái ngẫu nhiên từ `'a'` đến `'z'` để đo thông số hiệu năng thực tế.
+### B:
+
+test001.in (100,000 chuỗi giống hệt nhau): Sinh ra 10^5 chuỗi toàn ký tự 'a' dài đúng 100 ký tự. Khi so sánh hai chuỗi giống nhau, máy tính bắt buộc phải chạy từ ký tự thứ 1 đến ký tự thứ 100 mới đưa ra kết luận. Thao tác so sánh chuỗi lúc này đạt độ phức tạp tối đa.
+
+test002.in (Chỉ khác biệt ký tự cuối cùng): Tạo ra các chuỗi có 99 ký tự đầu hoàn toàn giống nhau, ký tự thứ 100 sẽ tăng dần theo vòng lặp từ a đến z. Thuật toán sắp xếp sẽ phải qua 99 ký tự đầu vô ích trước khi tìm thấy sự khác biệt ở ký tự cuối cùng.
+
+test003.in (Chuỗi dài 100 ký tự, thứ tự giảm dần): Sinh ra các chuỗi dài tối đa 100 ký tự nhưng xếp ngược từ điển từ trước. Phá vỡ luồng phân chia của các thuật toán Quick Sort dùng chốt mặc định.
+
+test004.in (Trùng tiền tố, độ dài tăng dần): Sinh các chuỗi dạng a, aa, aaa, aaaa... tăng dần độ dài lên tới 100 nhưng xếp lộn xộn hoặc giảm dần để test khả năng xử lý độ dài chuỗi của thuật toán.
+
+test005.in (Ngẫu nhiên): Sinh ngẫu nhiên cả độ dài (10 - 100) và ký tự ngẫu nhiên để test tính ổn định.
+
+### C:
+
+test001.in (Cùng độ dài tối đa 100, xếp ngược từ điển): Sinh ra 10000 chuỗi đều có chiều dài tối đa là 100 ký tự, nhưng các ký tự được xếp giảm dần. Test này triệt tiêu hoàn toàn lợi thế so sánh độ dài, ép thuật toán phải quay về bài toán so sánh chuỗi của những code không tối ưu.
+
+test002.in (Xen kẽ độ dài cực ngắn và cực dài): Sinh ra các chuỗi xen kẽ liên tục: một chuỗi dài 10 ký tự aaaa... rồi đến một chuỗi dài 100 ký tự zzzz.... Test này ép các thuật toán phải liên tục hoán đổi các vùng nhớ có kích thước chênh lệch lớn, dễ làm lộ lỗi tràn bộ nhớ hoặc lỗi index mảng đệm.
+
+test003.in (Độ dài giảm ): Sinh ra các chuỗi có độ dài giảm dần từ 100 xuống 10 (ngược hoàn toàn với yêu cầu đề bài là xếp tăng dần độ dài). Đây là cấu trúc dữ liệu tồi tệ nhất đối với những người sử dụng các thuật toán sắp xếp dựa trên phân hoạch.
+
+test004.in (Tất cả chuỗi giống hệt nhau và dài tối đa): Sinh ra 10000 chuỗi zzzz... dài đúng 100 ký tự. Test này bẫy các hàm Quick Sort tự viết không xử lý tốt trường hợp các phần tử bằng nhau.
+
+test005.in (Ngẫu nhiên): Sinh ngẫu nhiên cả độ dài (10 - 100) và ký tự ngẫu nhiên để test tính ổn định.
+
 
 ---
 
